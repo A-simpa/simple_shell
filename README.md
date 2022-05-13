@@ -5,12 +5,12 @@ This project is an implementation of the shell created as the final project for 
 
 ## Table of contents 📋
 
-[Description]
-[Installation]
-[Usage]
-[Example]
-[Contributors]
-[Acknowledgements]
+* Description
+* Installation
+* Usage
+* Example
+* Contributors
+* Acknowledgements
 
 ## Description 📧
 
