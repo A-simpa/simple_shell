@@ -2,6 +2,7 @@
 
 This project is an implementation of the shell created as the final project for the C code sprint at ALX Africa. 
 
+
 ## Table of contents 📋
 
 [Description]
@@ -32,13 +33,13 @@ From there, type in the following command and press your enter button.
 ./hsh
 Final step: ENJOY!
 
-Example 💻
+## Example 💻
 
 ls -la
 
 ## Authors 😎💪
 
-*NOBLE OKECHUKWU*
+**NOBLE OKECHUKWU**
 
 ## Acknowledgments 🙏
 
