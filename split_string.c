@@ -1,4 +1,4 @@
-#include "holberton.h"
+#include "shell.h"
 
 /**
  * splitString - splits string into an array of strings
