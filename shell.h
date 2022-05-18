@@ -1,10 +1,5 @@
-<<<<<<< HEAD
-#ifndef _SHELL_H
-#define _SHELL_H
-=======
-#ifndef _SHELL_H
-#define _SHELL_H
->>>>>>> 39994c7fa4163b123219387850a35b790a811763
+#ifndef SHELL_H
+#define SHELL_H
 
 #include <stdio.h>
 #include <stdlib.h>
