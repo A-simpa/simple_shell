@@ -79,6 +79,6 @@ The primary prompt string, which defaults to “$ ”
 .SH BUGS
 .ip Expansions only work once per stdin read
 .SH AUTHOR
-Noble Okechukwu and
+Noble Okechukwu and Abdulmujeeb Mohammed
 .SH SEE ALSO
 .BR sh (1)

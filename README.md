@@ -39,7 +39,7 @@ ls -la
 
 ## Authors 😎💪
 
-**NOBLE OKECHUKWU**
+**NOBLE OKECHUKWU** And **Abdulmujeeb Mohammed**
 
 ## Acknowledgments 🙏
 
