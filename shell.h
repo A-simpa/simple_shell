@@ -184,4 +184,9 @@ void freeArgsAndBuffer(config *build);
 void freeArgs(char **args);
 void freeList(linked_l *head);
 
+/* expansions */
+void checkExpansions(config *build);
+void envExpansions(config *build);
+void varExpansions(config *build);
+
 #endif
