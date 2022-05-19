@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * errorHandler - prints error message for shell

@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * findBuiltIns - validates if command is builtin and executes

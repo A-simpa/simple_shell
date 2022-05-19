@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * insertNullByte - inserts null byte at given index

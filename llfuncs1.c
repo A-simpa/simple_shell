@@ -1,4 +1,4 @@
-#include "shell.h"
+#include "main.h"
 
 /**
  * addNode - adds a new node at the beginning of a linked_l list
