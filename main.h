@@ -1,187 +1,233 @@
-#ifndef MAIN_H
-#define MAIN_H
+#ifndef _MAIN_H_
+#define _MAIN_H_
 
 #include <stdio.h>
-#include <stdlib.h>
-#include <stdbool.h>
-#include <sys/wait.h>
 #include <unistd.h>
+#include <stdlib.h>
 #include <sys/types.h>
+#include <sys/wait.h>
 #include <sys/stat.h>
-#include <fcntl.h>
 #include <errno.h>
+#include <fcntl.h>
 #include <signal.h>
 #include <limits.h>
 
-/* ERRORS */
-#define BUFSIZE 256
-#define ENOSTRING 1106
-#define EILLEGAL 227
-#define EWSIZE 410
-#define ENOBUILTIN 415
-#define EBADCD 726
+#define BUFSIZE 1024
+#define TOK_BUFSIZE 128
+#define TOK_DELIM " \t\r\n\a"
 
+/* Points to an array of pointers to strings called the "environment" */
 extern char **environ;
 
-/**
- * struct linkedList - linked list data structure
- * @string: environ variable path name
- * @next: pointer to next node
- */
-typedef struct linkedList
-{
-	char *string;
-	struct linkedList *next;
-} linked_l;
 
 /**
- * struct configurations - configuration of build settings
- * @env: linked list of local env variables
- * @envList: array of env variables to put into execve
- * @args: array of argument strings
- * @buffer: string buffer of user input
- * @path: array of $PATH locations
- * @fullPath: string of path with correct prepended $PATH
- * @shellName: name of shell (argv[0])
- * @lineCounter: counter of lines users have entered
- * @errorStatus: error status of last child process
+ * struct data - struct that contains all relevant data on runtime
+ * @av: argument vector
+ * @input: command line written by the user
+ * @args: tokens of the command line
+ * @status: last status of the shell
+ * @counter: lines counter
+ * @_environ: environment variable
+ * @pid: process ID of the shell
  */
-typedef struct configurations
+typedef struct data
 {
-	linked_l *env;
-	char **envList;
+	char **av;
+	char *input;
 	char **args;
-	char *buffer;
-	char *path;
-	char *fullPath;
-	char *shellName;
-	unsigned int lineCounter;
-	int errorStatus;
-} config;
+	int status;
+	int counter;
+	char **_environ;
+	char *pid;
+} data_shell;
 
 /**
- * struct builtInCommands - commands and functions associated with it
- * @command: input command
- * @func: output function
+ * struct sep_list_s - single linked list
+ * @separator: ; | &
+ * @next: next node
+ * Description: single linked list to store separators
  */
-typedef struct builtInCommands
+typedef struct sep_list_s
 {
-	char *command;
-	int (*func)(config *build);
-} type_b;
+	char separator;
+	struct sep_list_s *next;
+} sep_list;
 
-/* main */
-config *configInit(config *build);
+/**
+ * struct line_list_s - single linked list
+ * @line: command line
+ * @next: next node
+ * Description: single linked list to store command lines
+ */
+typedef struct line_list_s
+{
+	char *line;
+	struct line_list_s *next;
+} line_list;
 
-/* built_ins */
-_Bool findBuiltIns(config *build);
-int exitFunc(config *build);
-int historyFunc(config *build);
-int aliasFunc(config *build);
+/**
+ * struct r_var_list - single linked list
+ * @len_var: length of the variable
+ * @val: value of the variable
+ * @len_val: length of the value
+ * @next: next node
+ * Description: single linked list to store variables
+ */
+typedef struct r_var_list
+{
+	int len_var;
+	char *val;
+	int len_val;
+	struct r_var_list *next;
+} r_var;
 
-/* cd */
-int cdFunc(config *);
-_Bool cdToHome(config *build);
-_Bool cdToPrevious(config *build);
-_Bool cdToCustom(config *build);
-_Bool updateEnviron(config *build);
+/**
+ * struct builtin_s - Builtin struct for command args.
+ * @name: The name of the command builtin i.e cd, exit, env
+ * @f: data type pointer function.
+ */
+typedef struct builtin_s
+{
+	char *name;
+	int (*f)(data_shell *datash);
+} builtin_t;
 
-/* cd2 */
-int updateOld(config *build);
-_Bool updateCur(config *build, int index);
+/* aux_lists.c */
+sep_list *add_sep_node_end(sep_list **head, char sep);
+void free_sep_list(sep_list **head);
+line_list *add_line_node_end(line_list **head, char *line);
+void free_line_list(line_list **head);
 
-/* env */
-int envFunc(config *build);
-int setenvFunc(config *build);
-int unsetenvFunc(config *build);
-int _isalpha(int c);
+/* aux_lists2.c */
+r_var *add_rvar_node(r_var **head, int lvar, char *var, int lval);
+void free_rvar_list(r_var **head);
 
-/* help */
-int helpFunc(config *build);
-int displayHelpMenu(void);
-int helpExit(config *build);
-int helpEnv(config *build);
-int helpHistory(config *build);
+/* aux_str functions */
+char *_strcat(char *dest, const char *src);
+char *_strcpy(char *dest, char *src);
+int _strcmp(char *s1, char *s2);
+char *_strchr(char *s, char c);
+int _strspn(char *s, char *accept);
 
-/* help2 */
-int helpAlias(config *build);
-int helpCd(config *biuld);
-int helpSetenv(config *build);
-int helpUnsetenv(config *build);
-int helpHelp(config *build);
+/* aux_mem.c */
+void _memcpy(void *newptr, const void *ptr, unsigned int size);
+void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
+char **_reallocdp(char **ptr, unsigned int old_size, unsigned int new_size);
 
-/* built_in_helpers*/
-int countArgs(char **args);
+/* aux_str2.c */
+char *_strdup(const char *s);
+int _strlen(const char *s);
+int cmp_chars(char str[], const char *delim);
+char *_strtok(char str[], const char *delim);
+int _isdigit(const char *s);
+
+/* aux_str3.c */
+void rev_string(char *s);
+
+/* check_syntax_error.c */
+int repeated_char(char *input, int i);
+int error_sep_op(char *input, int i, char last);
+int first_char(char *input, int *i);
+void print_syntax_error(data_shell *datash, char *input, int i, int bool);
+int check_syntax_error(data_shell *datash, char *input);
+
+/* shell_loop.c */
+char *without_comment(char *in);
+void shell_loop(data_shell *datash);
+
+/* read_line.c */
+char *read_line(int *i_eof);
+
+/* split.c */
+char *swap_char(char *input, int bool);
+void add_nodes(sep_list **head_s, line_list **head_l, char *input);
+void go_next(sep_list **list_s, line_list **list_l, data_shell *datash);
+int split_commands(data_shell *datash, char *input);
+char **split_line(char *input);
+
+/* rep_var.c */
+void check_env(r_var **h, char *in, data_shell *data);
+int check_vars(r_var **h, char *in, char *st, data_shell *data);
+char *replaced_input(r_var **head, char *input, char *new_input, int nlen);
+char *rep_var(char *input, data_shell *datash);
+
+/* get_line.c */
+void bring_line(char **lineptr, size_t *n, char *buffer, size_t j);
+ssize_t get_line(char **lineptr, size_t *n, FILE *stream);
+
+/* exec_line */
+int exec_line(data_shell *datash);
+
+/* cmd_exec.c */
+int is_cdir(char *path, int *i);
+char *_which(char *cmd, char **_environ);
+int is_executable(data_shell *datash);
+int check_error_cmd(char *dir, data_shell *datash);
+int cmd_exec(data_shell *datash);
+
+/* env1.c */
+char *_getenv(const char *name, char **_environ);
+int _env(data_shell *datash);
+
+/* env2.c */
+char *copy_info(char *name, char *value);
+void set_env(char *name, char *value, data_shell *datash);
+int _setenv(data_shell *datash);
+int _unsetenv(data_shell *datash);
+
+/* cd.c */
+void cd_dot(data_shell *datash);
+void cd_to(data_shell *datash);
+void cd_previous(data_shell *datash);
+void cd_to_home(data_shell *datash);
+
+/* cd_shell.c */
+int cd_shell(data_shell *datash);
+
+/* get_builtin */
+int (*get_builtin(char *cmd))(data_shell *datash);
+
+/* _exit.c */
+int exit_shell(data_shell *datash);
+
+/* aux_stdlib.c */
+int get_len(int n);
+char *aux_itoa(int n);
 int _atoi(char *s);
 
-/* shell */
-void shell(config *build);
-void checkAndGetLine(config *build);
-void forkAndExecute(config *build);
-void stripComments(char *str);
-void convertLLtoArr(config *build);
+/* aux_error1.c */
+char *strcat_cd(data_shell *, char *, char *, char *);
+char *error_get_cd(data_shell *datash);
+char *error_not_found(data_shell *datash);
+char *error_exit_shell(data_shell *datash);
 
-/* _getenv */
-char *_getenv(char *input, char **environ);
+/* aux_error2.c */
+char *error_get_alias(char **args);
+char *error_env(data_shell *datash);
+char *error_syntax(char **args);
+char *error_permission(char **args);
+char *error_path_126(data_shell *datash);
 
-/* error_handler */
-void errorHandler(config *build);
-unsigned int countDigits(int num);
-char *itoa(unsigned int num);
-char *getErrorMessage();
 
-/* shell_helpers */
-void insertNullByte(char *str, unsigned int index);
-void displayPrompt(void);
-void displayNewLine(void);
-void sigintHandler(int sigint);
+/* get_error.c */
+int get_error(data_shell *datash, int eval);
 
-/* check_path */
-_Bool checkPath(config *);
-_Bool checkEdgeCases(config *build);
+/* get_sigint.c */
+void get_sigint(int sig);
 
-/* split_string */
-_Bool splitString(config *build);
-unsigned int countWords(char *s);
-_Bool isSpace(char c);
+/* aux_help.c */
+void aux_help_env(void);
+void aux_help_setenv(void);
+void aux_help_unsetenv(void);
+void aux_help_general(void);
+void aux_help_exit(void);
 
-/* string_helpers1 */
-int _strlen(char *s);
-char *_strcat(char *dest, char *src);
-int _strcmp(char *s1, char *s2);
-char *_strdup(char *str);
-char *_strcpy(char *dest, char *src);
+/* aux_help2.c */
+void aux_help(void);
+void aux_help_alias(void);
+void aux_help_cd(void);
 
-/* string_helpers2 */
-char *_strtok(char *str, char *delim);
-int _strcspn(char *string, char *chars);
-char *_strchr(char *s, char c);
-
-/* llfuncs1 */
-linked_l *addNode(linked_l **head, char *str);
-linked_l *addNodeEnd(linked_l **head, char *str);
-size_t printList(const linked_l *h);
-int searchNode(linked_l *head, char *str);
-size_t list_len(linked_l *h);
-
-/* llfuncs2 */
-int deleteNodeAtIndex(linked_l **head, unsigned int index);
-linked_l *generateLinkedList(char **array);
-linked_l *addNodeAtIndex(linked_l **head, int index, char *str);
-char *getNodeAtIndex(linked_l *head, unsigned int index);
-
-/* welcome */
-void welcome_screen_1(void);
-void welcome_screen_2(void);
-
-/* _realloc */
-void *_realloc(void *ptr, unsigned int old_size, unsigned int new_size);
-char *_memcpy(char *dest, char *src, unsigned int n);
-
-/* free */
-void freeMembers(config *build);
-void freeArgsAndBuffer(config *build);
-void freeArgs(char **args);
-void freeList(linked_l *head);
+/* get_help.c */
+int get_help(data_shell *datash);
 
 #endif
