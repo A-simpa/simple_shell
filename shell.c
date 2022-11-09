@@ -71,4 +71,5 @@ int forking(void)
 		wait(&status);
 		forking();
 	}
+	return 0;
 }
