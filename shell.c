@@ -16,7 +16,7 @@ extern char **environ;
  */
 
 
-int main(int ac, int av)
+int main(void)
 {
 	return (forking());
 }
