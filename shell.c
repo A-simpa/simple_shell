@@ -31,8 +31,8 @@ int main(void)
 		if (isatty(0) == 1)
 			printf("#cisfun$ ");
 		char_read = getline(&line, &n, stdin);
-		if (char_read == -1)
-			return(0);
+		/*if (char_read == -1)
+			return(0); */
 
 		if (line[char_read - 1] == '\n')
 			line[char_read - 1] = '\0';
