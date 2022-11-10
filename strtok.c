@@ -30,6 +30,7 @@ int count_words(char *str)
  * Return: the array length of the words
  */
 
+
 int in_len(char *str)
 {
 	int len;

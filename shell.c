@@ -37,7 +37,6 @@ int main(void)
 		if (line[char_read - 1] == '\n')
 			line[char_read - 1] = '\0';
 		split = _strtok(line);
-		free(line);
 		if (fork() == 0)
 		{
 			if(execve(split[0], split, environ) == -1)
