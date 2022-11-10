@@ -19,6 +19,7 @@ extern char **environ;
 int main(void)
 {
 	int status;
+	int size;
 	size_t n = 0;
 	char *line = NULL;
 	char **split;
@@ -36,6 +37,7 @@ int main(void)
 		if (line[char_read - 1] == '\n')
 			line[char_read - 1] = '\0';
 		split = _strtok(line);
+		free(line);
 		if (fork() == 0)
 		{
 			if(execve(split[0], split, environ) == -1)
@@ -48,5 +50,11 @@ int main(void)
 		{
 			wait(&status);
 		}
+		size = 0;
+		while(split[size] != NULL)
+		{
+			size++;
+		}
+		free_grid(split, size);
 	}
 }

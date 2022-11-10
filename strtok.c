@@ -15,10 +15,10 @@ int count_words(char *str)
 
 	for (; *str != '\0'; str++)
 	{
-		if  (*str != ' ' && (*(str - 1) == ' ' || count == 0))
-		{
+		if (*str != ' ' && count == 0)
 			count++;
-		}
+		else if  (*str != ' ' && *(str - 1) == ' ')
+			count++;
 	}
 	return (count);
 }
@@ -55,6 +55,7 @@ char **_strtok(char *str)
 {
 	char **strtwo;
 	int out_index = 0, ind = 0, len;
+	int flag;
 
 	if (str == NULL || str[0] == '\0')
 	{
@@ -69,7 +70,12 @@ char **_strtok(char *str)
 
 	for (; *str != '\0'; str++)
 	{
-		if (*str != ' ' && (*(str - 1) == ' ' || out_index == 0))
+		flag = 0;
+		if (*str != ' ' && out_index == 0)
+			flag = 1;
+		else if (*str != ' ' && *(str - 1) == ' ')
+			flag = 1;
+		if (flag == 1)
 		{
 
 			strtwo[ind] = malloc(sizeof(char) * (in_len(str) + 1));
