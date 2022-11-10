@@ -18,58 +18,35 @@ extern char **environ;
 
 int main(void)
 {
-	return (forking());
-}
-
-/**
- * forking - create a new everytime
- *
- *
- * Return: Always 0
- */
-
-
-int forking(void)
-{
-	pid_t child_pid;
 	int status;
-	char **splited, *line = NULL;
 	size_t n = 0;
+	char *line = NULL;
+	char **split;
 	ssize_t char_read;
 
-	if (2 == 3)
+
+	while(1)
 	{
-		return -1;
-	}
-	child_pid = fork();
-	if (child_pid == -1)
-	{
-		return(1);
-	}
-	else if (child_pid == 0)
-	{
-        	printf("#cisfun$ ");
-        	char_read = getline(&line, &n, stdin);
+		if (isatty(0) == 1)
+			printf("#cisfun$ ");
+		char_read = getline(&line, &n, stdin);
 		if (char_read == -1)
-			kill(0, 2);
-        	if (line[char_read - 1] == '\n')
-                	line[char_read - 1] = '\0';
-        	/*if (line[0] == 'e')
-        	 *{
-                 *	exit(0);
-        	}*/
-        	splited = _strtok(line);
-        	if (execve(splited[0], splited, environ) == -1)
-        	{
-                	printf("./shell: No such file or directory\n");
-        	}
+			return(0);
 
-	}
-	else
-	{
+		if (line[char_read - 1] == '\n')
+			line[char_read - 1] = '\0';
+		split = _strtok(line);
+		if (fork() == 0)
+		{
+			if(execve(split[0], split, environ) == -1)
+			{
+				printf("./shell: No file or directory found\n");
+			}
 
-		wait(&status);
-		forking();
+		}
+		else
+		{
+			wait(&status);
+		}
 	}
-	return 0;
 }
