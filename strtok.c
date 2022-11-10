@@ -63,7 +63,7 @@ char **_strtok(char *str)
 		return (NULL);
 	}
 	strtwo = malloc((sizeof(char *)) * (count_words(str) + 1));
-	if (strtwo == NULL || count_words(str) == 0)
+	if (strtwo == NULL)
 	{
 		free(strtwo);
 		return (NULL);
