@@ -9,13 +9,12 @@
 
 
 
-int __getline(char **lineptr, size_t *len, FILE *stream);
+int __getline(char **lineptr,  FILE *stream);
 
-int __getline(char **lineptr, size_t *len, FILE *stream)
+int __getline(char **lineptr,  FILE *stream)
 {
 	int i = 0;
 	int nread = 0;
-	(void)len;
 	char ch;
 	int n = 0;
 
@@ -50,14 +49,13 @@ int main(int ac __attribute__((unused)),  char **av) {
 
 	char *prompt = "#cisfun$ ";
 	char *lineptr = NULL, *argv[] = {NULL, NULL};
-	size_t len = 0;
 	int nread;
 	int wstatus;
 	pid_t pid;
 
 	do {
 		printf("%s", prompt);
-		nread = __getline(&lineptr, &len, stdin);
+		nread = __getline(&lineptr, stdin);
 		if (nread == -1)
 			return (0);
 
