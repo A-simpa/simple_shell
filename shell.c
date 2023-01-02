@@ -70,7 +70,6 @@ int main(int ac __attribute__((unused)),  char **av) {
 			execve(argv[0], argv, NULL);
 			perror(av[0]);
 		}
-		free(lineptr);
 		/*if (pid == 0)
 			printf("I am child\n");
 		else if (pid != 0)
