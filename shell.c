@@ -1,61 +1,83 @@
-#include "main.h"
 #include <stdio.h>
-#include <unistd.h>
-#include <sys/types.h>
 #include <sys/wait.h>
+#include <sys/types.h>
 #include <stdlib.h>
-#include <signal.h>
-
-extern char **environ;
-
-
-/**
- * main - execve example
- *
- * Return: Always 0.
- */
+#include <unistd.h>
+#include "main.h"
 
 
-int main(void)
+
+
+
+int __getline(char **lineptr, size_t *len, FILE *stream);
+
+int __getline(char **lineptr, size_t *len, FILE *stream)
 {
-	int status;
-	int size;
-	size_t n = 0;
-	char *line = NULL;
-	char **split;
-	ssize_t char_read;
+	int i = 0;
+	int nread = 0;
+	(void)len;
+	char ch;
+	int n = 0;
 
+	char *hello = malloc(sizeof(char) * 120);
+	if (hello == NULL)
+		return (-1);
 
-	while(1)
+	while ((ch = getc(stream)) != '\n' && ch != EOF)
 	{
-		if (isatty(0) == 1)
-			printf("#cisfun$ ");
-		char_read = getline(&line, &n, stdin);
-		if (char_read == -1)
-			return(0);
-
-		if (line[char_read - 1] == '\n')
-			line[char_read - 1] = '\0';
-		split = _strtok(line);
-		free(line);
-		if (fork() == 0)
+		nread++;
+		if (nread == n)
 		{
-			if(execve(split[0], split, environ) == -1)
-			{
-				printf("./shell: No file or directory found\n");
-			}
+			hello = realloc(hello, n * 2);
+			n = n * 2;
+		}
+		hello[i] = ch;
+		i++;
+	}
+	hello[i] = '\0';
+	if (nread == 0)
+	{
+		free(hello);
+		return -1;
+	}
 
+	*lineptr = hello;
+	return (nread);
+}
+
+
+int main(int ac __attribute__((unused)),  char **av) {
+
+	char *prompt = "#cisfun$ ";
+	char *lineptr = NULL, *argv[] = {NULL, NULL};
+	size_t len = 0;
+	int nread;
+	int wstatus;
+	pid_t pid;
+
+	do {
+		printf("%s", prompt);
+		nread = __getline(&lineptr, &len, stdin);
+		if (nread == -1)
+			return (0);
+
+		argv[0] = lineptr;
+		pid = fork();
+		if (pid != 0)
+		{
+			wait(&wstatus);
 		}
 		else
 		{
-			wait(&status);
+			execve(argv[0], argv, NULL);
+			perror(av[0]);
 		}
-		size = 0;
-		while(split[size] != NULL)
-		{
-			size++;
-		}
-		free_grid(split, size);
-	}
-	free(line);
+		free(lineptr);
+		/*if (pid == 0)
+			printf("I am child\n");
+		else if (pid != 0)
+			printf("I am parent\n");*/
+	} while (1 && isatty(0));
+	free(lineptr);
+	return (0);
 }
