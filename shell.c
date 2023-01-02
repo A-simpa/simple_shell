@@ -54,12 +54,6 @@ int main(int ac __attribute__((unused)),  char **av) {
 	pid_t pid;
 
 	do {
-		printf("%s", prompt);
-		nread = __getline(&lineptr, stdin);
-		if (nread == -1)
-			return (0);
-
-		argv[0] = lineptr;
 		pid = fork();
 		if (pid != 0)
 		{
@@ -67,6 +61,11 @@ int main(int ac __attribute__((unused)),  char **av) {
 		}
 		else
 		{
+			printf("%s", prompt);
+			nread = __getline(&lineptr, stdin);
+			if (nread == -1)
+				return (0);
+			argv[0] = lineptr;
 			execve(argv[0], argv, NULL);
 			perror(av[0]);
 		}
