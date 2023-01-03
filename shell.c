@@ -44,7 +44,7 @@ int main(int ac __attribute__((unused)), char **av) {
 
 	char *prompt = "#cisfun$ ", **arr;
 	char *lineptr = NULL;
-	int nread = 0, wstatus;
+	int nread = 0, wstatus, i;
 	pid_t pid;
 	size_t len = 0;
 
@@ -55,14 +55,21 @@ int main(int ac __attribute__((unused)), char **av) {
                 nread = getline(&lineptr, &len, stdin);
                 if (nread == -1)
 		{
-			printf("\n");
+			if (isatty(0))
+				printf("\n");
                         break;
 		}
 		lineptr[nread - 1] = '\0';
 		arr = split_words(lineptr, ' ');
 		pid  = fork();
                 if (pid != 0)
-                        wait(&wstatus);
+		{
+ 			wait(&wstatus);
+			for (i = 0; arr[i]; i++)
+                		free(arr[i]);
+			free(arr[i]);
+			free(arr);
+		}
                 else
                 {
                         execve(arr[0], arr, NULL);
