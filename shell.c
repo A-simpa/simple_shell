@@ -1,15 +1,10 @@
-#include <stdio.h>
-#include <sys/wait.h>
-#include <sys/types.h>
-#include <stdlib.h>
-#include <unistd.h>
 #include "main.h"
 
 
 
 
 
-int __getline(char **lineptr,  FILE *stream);
+/*int __getline(char **lineptr,  FILE *stream);
 
 int __getline(char **lineptr,  FILE *stream)
 {
@@ -42,53 +37,38 @@ int __getline(char **lineptr,  FILE *stream)
 
 	*lineptr = hello;
 	return (nread);
-}
+}*/
 
 
 int main(int ac __attribute__((unused)), char **av) {
 
-	char *prompt = "#cisfun$ ";
-	char *lineptr = NULL, *argv[] = {NULL, NULL};
+	char *prompt = "#cisfun$ ", **arr;
+	char *lineptr = NULL;
 	int nread = 0, wstatus;
 	pid_t pid;
 	size_t len = 0;
 
-	if (isatty(0))
-	{
-		do {
+	do {
+		if (isatty(0))
                 	printf("%s", prompt);
-                	nread = getline(&lineptr, &len, stdin);
-                	if (nread == -1)
-			{
-				printf("\n");
-                        	break;
-			}
-			lineptr[nread - 1] = '\0';
-			argv[0] = lineptr;
-			pid  = fork();
-                	if (pid != 0)
-                        	wait(&wstatus);
-                	else
-                	{
-                        	execve(argv[0], argv, NULL);
-                        	perror(av[0]);
-                	}
-		} while (1);
-	}
-	else
-	{
-		while ((nread = getline(&lineptr, &len, stdin)) != -1) {
-			pid = fork();
-			if (pid != 0) {
-				wait(&wstatus);
-			} else {
-				lineptr[nread - 1] = '\0';
-				argv[0] = lineptr;
-				execve(argv[0], argv, NULL);
-				perror(av[0]);
-        		}
-    		}
-	}
+
+                nread = getline(&lineptr, &len, stdin);
+                if (nread == -1)
+		{
+			printf("\n");
+                        break;
+		}
+		lineptr[nread - 1] = '\0';
+		arr = split_words(lineptr, ' ');
+		pid  = fork();
+                if (pid != 0)
+                        wait(&wstatus);
+                else
+                {
+                        execve(arr[0], arr, NULL);
+                        perror(av[0]);
+                }
+	} while (1);
 	free(lineptr);
 	return (0);
 }
