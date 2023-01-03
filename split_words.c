@@ -26,7 +26,7 @@ char **split_words(char *str, char del)
 	char **arr, buf;
 
 	count = count_words(str, del);
-	arr = malloc(sizeof(char *) * (count + 2));
+	arr = malloc(sizeof(char *) * (count + 1));
 	while (str[i])
 	{
 		if (i == 0 && str[i++] == del)
@@ -57,7 +57,7 @@ char **split_words(char *str, char del)
 		}
 		i++;
 	}
-	arr[count+1] = NULL;
+	arr[count] = NULL;
 	return (arr);
 }
 

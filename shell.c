@@ -2,8 +2,6 @@
 
 
 
-
-
 /*int __getline(char **lineptr,  FILE *stream);
 
 int __getline(char **lineptr,  FILE *stream)
@@ -65,9 +63,8 @@ int main(int ac __attribute__((unused)), char **av) {
                 if (pid != 0)
 		{
  			wait(&wstatus);
-			for (i = 0; arr[i]; i++)
+			for (i = 0; arr[i] != NULL; i++)
                 		free(arr[i]);
-			free(arr[i]);
 			free(arr);
 		}
                 else
