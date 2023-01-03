@@ -51,24 +51,23 @@ int main(int ac __attribute__((unused)), char **av) {
 	char *lineptr = NULL, *argv[] = {NULL, NULL};
 	int nread = 0, wstatus;
 	pid_t pid;
+	size_t len = 0;
 
 	if (isatty(0))
 	{
 		do {
                 	printf("%s", prompt);
-                	nread = __getline(&lineptr, stdin);
+                	nread = getline(&lineptr, &len, stdin);
                 	if (nread == -1)
 			{
 				printf("\n");
                         	break;
 			}
-
+			lineptr[nread - 1] = '\0';
 			argv[0] = lineptr;
 			pid  = fork();
                 	if (pid != 0)
-                	{
                         	wait(&wstatus);
-                	}
                 	else
                 	{
                         	execve(argv[0], argv, NULL);
@@ -78,11 +77,12 @@ int main(int ac __attribute__((unused)), char **av) {
 	}
 	else
 	{
-		while ((nread = __getline(&lineptr, stdin)) != -1) {
+		while ((nread = getline(&lineptr, &len, stdin)) != -1) {
 			pid = fork();
 			if (pid != 0) {
 				wait(&wstatus);
 			} else {
+				lineptr[nread - 1] = '\0';
 				argv[0] = lineptr;
 				execve(argv[0], argv, NULL);
 				perror(av[0]);
