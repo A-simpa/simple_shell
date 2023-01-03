@@ -55,24 +55,26 @@ int main(int ac __attribute__((unused)), char **av) {
 	if (isatty(0))
 	{
 		do {
-			pid = fork();
-			if (pid != 0)
+                	printf("%s", prompt);
+                	nread = __getline(&lineptr, stdin);
+                	if (nread == -1)
 			{
-				wait(&wstatus);
-				if ((wstatus & 0xff) == 0)
-					break;
+				printf("\n");
+                        	break;
 			}
-			else
-			{
-				printf("%s", prompt);
-				nread = __getline(&lineptr, stdin);
-				if (nread == -1)
-					exit(2);
-				argv[0] = lineptr;
-				execve(argv[0], argv, NULL);
-				perror(av[0]);
-			}
-		} while (1 && nread != -1);
+
+			argv[0] = lineptr;
+			pid  = fork();
+                	if (pid != 0)
+                	{
+                        	wait(&wstatus);
+                	}
+                	else
+                	{
+                        	execve(argv[0], argv, NULL);
+                        	perror(av[0]);
+                	}
+		} while (1);
 	}
 	else
 	{
