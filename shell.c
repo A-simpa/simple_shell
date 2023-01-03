@@ -45,35 +45,50 @@ int __getline(char **lineptr,  FILE *stream)
 }
 
 
-int main(int ac __attribute__((unused)),  char **av) {
+int main(int ac __attribute__((unused)), char **av) {
 
 	char *prompt = "#cisfun$ ";
 	char *lineptr = NULL, *argv[] = {NULL, NULL};
-	int nread;
-	int wstatus;
+	int nread = 0, wstatus;
 	pid_t pid;
 
-	do {
-		pid = fork();
-		if (pid != 0)
-		{
-			wait(&wstatus);
-		}
-		else
-		{
-			printf("%s", prompt);
-			nread = __getline(&lineptr, stdin);
-			if (nread == -1)
-				return (0);
-			argv[0] = lineptr;
-			execve(argv[0], argv, NULL);
-			perror(av[0]);
-		}
-		/*if (pid == 0)
-			printf("I am child\n");
-		else if (pid != 0)
-			printf("I am parent\n");*/
-	} while (1 && isatty(0));
+	if (isatty(0))
+	{
+		do {
+			pid = fork();
+			if (pid != 0)
+			{
+				wait(&wstatus);
+				if ((wstatus & 0xff) == 0)
+					break;
+			}
+			else
+			{
+				printf("%s", prompt);
+				nread = __getline(&lineptr, stdin);
+				if (nread == -1)
+					exit(2);
+				argv[0] = lineptr;
+				execve(argv[0], argv, NULL);
+				perror(av[0]);
+			}
+		} while (1 && nread != -1);
+	}
+	else
+	{
+		while ((nread = __getline(&lineptr, stdin)) != -1) {
+			pid = fork();
+			if (pid != 0) {
+				wait(&wstatus);
+			} else {
+				argv[0] = lineptr;
+				execve(argv[0], argv, NULL);
+				perror(av[0]);
+        		}
+    		}
+	}
 	free(lineptr);
 	return (0);
 }
+
+
