@@ -26,6 +26,8 @@ char **split_words(char *str, char del)
 	char **arr, buf;
 
 	count = count_words(str, del);
+	if (count == 0)
+		return (NULL);
 	arr = malloc(sizeof(char *) * (count + 1));
 	while (str[i])
 	{
@@ -64,18 +66,11 @@ char **split_words(char *str, char del)
 
 /*int main(void)
 {
-	char str[] = "/home/vagrant/.local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/usr/games:/usr/local/games:/snap/bin";
-	char **arr = NULL;
-	int i;
+	char str[] = "";
+	int count;
 
-	arr = split_words(str, ':');
-	for (i = 0; arr[i]; i++)
-		printf("%s\n", arr[i]);
-	for (i = 0; arr[i]; i++)
-		free(arr[i]);
-	free(arr[i]);
-        free(arr);
-	return (EXIT_SUCCESS);
+	count = count_words(str, ' ');
+	printf("%d", count);
 }*/
 
 

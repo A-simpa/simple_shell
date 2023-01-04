@@ -59,6 +59,8 @@ int main(int ac __attribute__((unused)), char **av) {
 		}
 		lineptr[nread - 1] = '\0';
 		arr = split_words(lineptr, ' ');
+		if (!arr)
+			continue;
 		pid  = fork();
                 if (pid != 0)
 		{
