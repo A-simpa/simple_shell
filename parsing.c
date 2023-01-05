@@ -8,8 +8,7 @@
 
 
 
-
-char **parsing(char *lineptr)
+char **parsing(char *lineptr, char *name, int count)
 {
 	char **arr;
 	char  *cmd;
@@ -18,11 +17,15 @@ char **parsing(char *lineptr)
 	arr = split_words(lineptr, ' ');
 	if (arr)
 	{
-		 if (stat(arr[0], &sb) == 0)
+		if (stat(arr[0], &sb) == 0)
 			return (arr);
 		cmd = _which(arr[0]);
 		if (!cmd)
+		{
+			fprintf(stderr, "%s: %d: %s: not found\n", name, count, arr[0]);
+			free_array(arr);
 			return (NULL);
+		}
 		free(arr[0]);
 		arr[0] = cmd;
 		return (arr);

@@ -4,9 +4,7 @@ char *_getenv(const char *name);
 
 char *_which(char *av)
 {
-	char *path;
-	char *filename, *c_path;
-	char **arr;
+	char *path, *filename, *c_path, **arr;
 	struct stat sb;
 	int i = 0;
 

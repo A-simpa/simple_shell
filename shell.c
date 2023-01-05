@@ -42,7 +42,7 @@ int main(int ac __attribute__((unused)), char **av) {
 
 	char *prompt = "#cisfun$ ", **arr;
 	char *lineptr = NULL;
-	int nread = 0, wstatus, i;
+	int nread = 0, wstatus, count = 1;
 	pid_t pid;
 	size_t len = 0;
 
@@ -58,25 +58,21 @@ int main(int ac __attribute__((unused)), char **av) {
                         break;
 		}
 		lineptr[nread - 1] = '\0';
-		arr = parsing(lineptr);
+		arr = parsing(lineptr, av[0], count);
 		if (!arr)
 			continue;
 		pid  = fork();
                 if (pid != 0)
 		{
  			wait(&wstatus);
-			for (i = 0; arr[i] != NULL; i++)
-                		free(arr[i]);
-			free(arr);
+			free_array(arr);
 		}
                 else
                 {
                         execve(arr[0], arr, NULL);
                         perror(av[0]);
                 }
-	} while (1);
+	} while (count++);
 	free(lineptr);
 	return (0);
 }
-
-
