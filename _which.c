@@ -22,10 +22,25 @@ char *_which(char *av)
 		c_path = strcat(c_path, filename);
 		if (stat(c_path, &sb) == 0)
 		{
+			free_array(arr);
 			return (c_path);
 		}
 		free(c_path);
 		i++;
 	}
+	free_array(arr);
 	return (NULL);
+}
+
+
+
+void free_array(char **arr)
+{
+	int  i = 0;
+
+	while(arr[i])
+	{
+		free(arr[i++]);
+	}
+	free(arr);
 }

@@ -18,5 +18,5 @@ int count_words(char *sr, char del);
 char *_getenv(const char *name);
 char *_which(char *av);
 char **parsing(char *lineptr);
-
+void free_array(char **arr);
 #endif /*MAIN_H*/
