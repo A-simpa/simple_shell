@@ -7,9 +7,10 @@ char *_which(char *av)
 	char *path, *filename, *c_path, **arr;
 	struct stat sb;
 	int i = 0;
+	char env[] = "PATH";
 
 	filename = av;
-	path = _getenv("PATH");
+	path = _getenv(env);
 	if (!path)
 		return (NULL);
 	arr = split_words(path, ':');

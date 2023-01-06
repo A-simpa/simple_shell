@@ -1,3 +1,4 @@
+
 #include "main.h"
 
 /**
@@ -35,7 +36,7 @@ char *_getenv(const char *name) {
 
 /**int main(void)
 {
-	char env[] = "PATH";
+	char env[] = "PATH1";
         char *p;
 
 	p = _getenv(env);
