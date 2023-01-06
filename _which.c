@@ -11,6 +11,8 @@ char *_which(char *av)
 	filename = av;
 	path = _getenv("PATH");
 	arr = split_words(path, ':');
+	if (!arr)
+		return (NULL);
 
 	while (arr[i])
 	{
