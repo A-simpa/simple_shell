@@ -8,7 +8,7 @@
 
 
 
-char **parsing(char *lineptr, char *name, int count)
+char **parsing(char *lineptr, char *name, int count, int *flag)
 {
 	char **arr;
 	char  *cmd;
@@ -22,7 +22,7 @@ char **parsing(char *lineptr, char *name, int count)
 		cmd = _which(arr[0]);
 		if (!cmd)
 		{
-			errno = 127;
+			*flag = 127;
 			fprintf(stderr, "%s: %d: %s: not found\n", name, count, arr[0]);
 			free_array(arr);
 			return (NULL);
