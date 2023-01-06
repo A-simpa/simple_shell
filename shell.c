@@ -55,6 +55,7 @@ int main(int ac __attribute__((unused)), char **av) {
 		{
 			if (isatty(0))
 				printf("\n");
+			free(lineptr);
                         return (flag);
 		}
 		lineptr[nread - 1] = '\0';
