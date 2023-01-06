@@ -22,6 +22,7 @@ char **parsing(char *lineptr, char *name, int count)
 		cmd = _which(arr[0]);
 		if (!cmd)
 		{
+			errno = 127;
 			fprintf(stderr, "%s: %d: %s: not found\n", name, count, arr[0]);
 			free_array(arr);
 			return (NULL);

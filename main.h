@@ -9,7 +9,7 @@
 #include <sys/types.h>
 #include <unistd.h>
 #include <sys/stat.h>
-
+#include <errno.h>
 
 int _getline(char **lineptr, size_t *n,  FILE* stream);
 int get_count(FILE *stream);
