@@ -22,8 +22,10 @@ char *_getenv(const char *name) {
   {
     if (strncmp(name, environ[i], strlen(name)) == 0)
     {
-      path = environ[i] + strlen(name) + 1;
-      break;
+	if (*((environ[i] + srlen(name)) != '=')
+		return (NULL);
+	path = environ[i] + strlen(name) + 1;
+	break;
     }
   }
 
