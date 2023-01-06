@@ -10,8 +10,6 @@ char *_which(char *av)
 
 	filename = av;
 	path = _getenv("PATH");
-	if (!path)
-		return (NULL);
 	arr = split_words(path, ':');
 	if (!arr)
 		return (NULL);
