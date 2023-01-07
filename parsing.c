@@ -10,7 +10,7 @@
 
 char **parsing(char *lineptr, char *name, int count, int *flag)
 {
-	char **arr, path[] = "PATH";
+	char **arr;
 	char  *cmd;
 	struct stat sb;
 
