@@ -11,6 +11,8 @@
 #include <sys/stat.h>
 #include <errno.h>
 
+extern char **environ;
+
 int _getline(char **lineptr, size_t *n,  FILE* stream);
 int get_count(FILE *stream);
 char **split_words(char *str, char del);

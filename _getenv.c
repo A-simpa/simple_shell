@@ -10,7 +10,6 @@
  * 				 otherwise, NULL.
  */
 
-extern char **environ;
 
 char *_getenv(const char *name) {
   char *path = NULL;
