@@ -60,7 +60,8 @@ int main(int ac __attribute__((unused)), char **av) {
 		arr = parsing(lineptr, av[0], count, &flag);
 		if (!arr)
 		{
-			exit(0);
+			if (flag == -1)
+				free(lineptr), exit(0);
 			continue;
 		}
 		pid  = fork();
