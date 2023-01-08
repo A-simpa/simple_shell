@@ -74,7 +74,7 @@ int main(int ac __attribute__((unused)), char **av) {
 		}
                 else
                 {
-                        execve(arr[0], arr, environ);
+                        flag = execve(arr[0], arr, environ);
                         perror(av[0]);
                 }
 	} while (count++);

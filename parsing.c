@@ -21,7 +21,7 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 			return (arr);
 		if (builtin_check(arr[0]) == 0)
 		{
-			if (*flag == 127)
+			if (*flag == 127 || *flag == -1)
 				*flag = 2;
 			else
 				*flag = -1;
