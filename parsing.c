@@ -21,7 +21,11 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 			return (arr);
 		if (builtin_check(arr[0]) == 0)
 		{
-			*flag = -1, free_array(arr);
+			if (*flag == 127)
+				*flag = 2;
+			else
+				*flag = -1;
+			free_array(arr);
 			return (NULL);
 		}
 		cmd = _which(arr[0]);

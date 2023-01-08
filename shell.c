@@ -62,6 +62,8 @@ int main(int ac __attribute__((unused)), char **av) {
 		{
 			if (flag == -1)
 				free(lineptr), exit(0);
+			if (flag == 2)
+				free(lineptr), exit(2);
 			continue;
 		}
 		pid  = fork();
