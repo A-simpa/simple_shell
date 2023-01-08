@@ -21,4 +21,5 @@ char *_getenv(const char *name);
 char *_which(char *av);
 char **parsing(char *lineptr, char *name, int count, int *flag);
 void free_array(char **arr);
+int builtin_check(const char *name);
 #endif /*MAIN_H*/
