@@ -1,10 +1,19 @@
 #include "main.h"
 
+/**
+ * count_words - count the number of words in a string
+ *
+ * @str: string pointer to the string
+ * @del: the delimeter to use to split
+ *
+ * Return: count as integer
+ */
+
 int count_words(char *str, char del)
 {
 	int i = 0, count = 0;
 
-	/** Counting the number of words */
+	/* Counting the number of words */
 	while (str[i] != '\0')
 	{
 		if (i == 0 && str[i] == del)
@@ -12,12 +21,21 @@ int count_words(char *str, char del)
 			i++;
 			continue;
 		}
-		else if ( (str[i] == del || !(str[i+1])) && str[i-1] != del)
+		else if ((str[i] == del || !(str[i + 1])) && str[i - 1] != del)
 			count++;
 		i++;
 	}
 	return (count);
 }
+
+/**
+ * split_words - splits words at some particular delimeter
+ *
+ * @str: the string to split
+ * @del: the delimeter to use
+ *
+ * Return: an array of words
+ */
 
 char **split_words(char *str, char del)
 {
@@ -33,7 +51,7 @@ char **split_words(char *str, char del)
 	{
 		if (i == 0 && str[i++] == del)
 			continue;
-		else if ( (str[i] == del || !(str[i+1])) && str[i-1] != del)
+		else if ((str[i] == del || !(str[i + 1])) && str[i - 1] != del)
 		{
 			cur = i;
 			if (str[i + 1])
@@ -64,14 +82,16 @@ char **split_words(char *str, char del)
 }
 
 
-/*int main(void)
-{
-	char str[] = "";
-	int count;
-
-	count = count_words(str, ' ');
-	printf("%d", count);
-}*/
+/*
+ *int main(void)
+ *{
+ *	char str[] = "";
+ *	int count;
+ *
+ *	count = count_words(str, ' ');
+ *	printf("%d", count);
+ *}
+ */
 
 
 

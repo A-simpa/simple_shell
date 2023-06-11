@@ -2,6 +2,13 @@
 
 char *_getenv(const char *name);
 
+/**
+ * _which - finds the path of executable command in the PATH variable
+ *
+ * @av: string pointer that contain command
+ * Return: string pointer to the path
+ */
+
 char *_which(char *av)
 {
 	char *path, *filename, *c_path, **arr;
@@ -36,12 +43,18 @@ char *_which(char *av)
 }
 
 
+/**
+ * free_array - free an array
+ *
+ * @arr: the array to be freed
+ * Return: void
+ */
 
 void free_array(char **arr)
 {
 	int  i = 0;
 
-	while(arr[i])
+	while (arr[i])
 	{
 		free(arr[i++]);
 	}

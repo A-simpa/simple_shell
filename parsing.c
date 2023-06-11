@@ -1,9 +1,14 @@
 #include "main.h"
 
 /**
+ * parsing - does all the cleaning needed
+ * to have all commands and its variable
  *
- *
- *
+ * @lineptr: string pointer to the current input line
+ * @name: name of cmd
+ * @count: line count
+ * @flag: indicators of sucess or failure
+ * Return: returns an array of process commmand and argument
  */
 
 
@@ -19,7 +24,7 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 	{
 		if (stat(arr[0], &sb) == 0 && strchr(arr[0], '/'))
 			return (arr);
-		/*printf("got to front of builtin") */;
+		/*printf("got to front of builtin") */
 		if (builtin_check(arr[0]) == 0)
 		{
 			if (*flag == 127 || *flag == -1)
@@ -27,7 +32,7 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 			else
 			{
 				if (arr[1] != NULL)
-					*flag = atoi(arr[1]);
+					*flag = _atoi(arr[1]);
 				else
 					*flag = 0;
 				free_array(arr);
