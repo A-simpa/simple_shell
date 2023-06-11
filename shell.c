@@ -54,7 +54,7 @@ int main(int ac __attribute__((unused)), char **av) {
 			if (isatty(0))
 				printf("\n");
 			free(lineptr);
-                        return (flag);
+                        exit(flag);
 		}
 		lineptr[nread - 1] = '\0';
 		arr = parsing(lineptr, av[0], count, &flag);
@@ -69,7 +69,17 @@ int main(int ac __attribute__((unused)), char **av) {
 		pid  = fork();
                 if (pid != 0)
 		{
+			//parent process
  			wait(&wstatus);
+			/*
+				if (WIFSIGNALED(wstatus)) {
+				printf("entered here");
+            			flag = WTERMSIG(wstatus);
+				printf("exited with signal %d", flag);
+			}
+			*/
+			// Terminate parent process with the same exit status as the child
+			//exit(childExitStatus);
 			free_array(arr), flag = 0;
 		}
                 else

@@ -2,17 +2,19 @@
 #include "main.h"
 
 /**
+ *builtin_check - checks if a command is a built-in
  *
+ *@cmd: cmd used
  */
 
 
-int builtin_check(const char *name)
+int builtin_check(const char *cmd)
 {
   	char ex[] = "exit";
-
-	if (strncmp(name, ex, strlen(ex)) == 0)
+	if (strncmp(cmd, ex, strlen(ex)) == 0)
 	{
-		if (name[strlen(ex)] != '\0')
+		//printf("exit found\n");
+		if (cmd[strlen(ex)] != '\0')
 			return (-1);
 		return (0);
 	}
