@@ -35,6 +35,7 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 					*flag = _atoi(arr[1]);
 				else
 					*flag = 0;
+				free(lineptr);
 				free_array(arr);
 				exit(*flag);
 			}
