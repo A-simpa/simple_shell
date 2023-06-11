@@ -69,17 +69,15 @@ int main(int ac __attribute__((unused)), char **av) {
 		pid  = fork();
                 if (pid != 0)
 		{
-			//parent process
+			/*parent process*/
  			wait(&wstatus);
-			/*
-				if (WIFSIGNALED(wstatus)) {
-				printf("entered here");
-            			flag = WTERMSIG(wstatus);
-				printf("exited with signal %d", flag);
-			}
-			*/
-			// Terminate parent process with the same exit status as the child
-			//exit(childExitStatus);
+		/*
+		*		if (WIFSIGNALED(wstatus)) {
+		*		printf("entered here");
+            	*		flag = WTERMSIG(wstatus);
+		*		printf("exited with signal %d", flag);
+		*	}
+		*/
 			free_array(arr), flag = 0;
 		}
                 else

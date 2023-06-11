@@ -13,7 +13,7 @@ int builtin_check(const char *cmd)
   	char ex[] = "exit";
 	if (strncmp(cmd, ex, strlen(ex)) == 0)
 	{
-		//printf("exit found\n");
+		/*printf("exit found\n")*/;
 		if (cmd[strlen(ex)] != '\0')
 			return (-1);
 		return (0);

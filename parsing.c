@@ -19,7 +19,7 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 	{
 		if (stat(arr[0], &sb) == 0 && strchr(arr[0], '/'))
 			return (arr);
-		//printf("got to front of builtin");
+		/*printf("got to front of builtin") */;
 		if (builtin_check(arr[0]) == 0)
 		{
 			if (*flag == 127 || *flag == -1)
