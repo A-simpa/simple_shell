@@ -15,7 +15,7 @@
 
 char **parsing(char *lineptr, char *name, int count, int *flag)
 {
-	char **arr, char  *cmd;
+	char **arr, *cmd;
 	struct stat sb;
 
 	arr = split_words(lineptr, ' ');
