@@ -27,20 +27,11 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 		/*printf("got to front of builtin") */
 		if (builtin_check(arr[0]) == 0)
 		{
-			if (*flag == 127 || *flag == -1)
-				*flag = 2;
-			else
-			{
-				if (arr[1] != NULL)
-					*flag = _atoi(arr[1]);
-				else
-					*flag = 0;
-				free(lineptr);
-				free_array(arr);
-				exit(*flag);
-			}
+			if (arr[1] != NULL)
+				*flag = _atoi(arr[1]);
+			free(lineptr);
 			free_array(arr);
-			return (NULL);
+			exit(*flag);
 		}
 		cmd = _which(arr[0]);
 		if (!cmd)

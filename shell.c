@@ -67,29 +67,18 @@ int main(int ac __attribute__((unused)), char **av)
 		{
 			if (flag == -1)
 				free(lineptr), exit(0);
-			if (flag == 2)
-				free(lineptr), exit(2);
 			continue;
 		}
-		pid  = fork();
+		pid = fork();
 		if (pid != 0)
 		{
-			/*parent process*/
 			wait(&wstatus);
-		/*
-		*		if (WIFSIGNALED(wstatus)) {
-		*		printf("entered here");
-            	*		flag = WTERMSIG(wstatus);
-		*		printf("exited with signal %d", flag);
-		*	}
-		*/
-			free_array(arr), flag = 0;
+			if (WIFEXITED(wstatus))
+				flag = WEXITSTATUS(wstatus);
+			free_array(arr);
 		}
-                else
-                {
-                        flag = execve(arr[0], arr, environ);
-                        perror(av[0]);
-                }
+		else
+			flag = execve(arr[0], arr, environ), perror(av[0]);
 	} while (count++);
 	free(lineptr);
 	return (0);
