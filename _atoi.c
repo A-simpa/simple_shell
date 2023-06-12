@@ -16,10 +16,10 @@ int digit_count(char *s)
 		{
 			digit_no++;
 			if (!(*(s + 1) >= 48 && *(s + 1) <= 57))
-			{
 				break;
-			}
 		}
+		else
+			return (-5);
 		s++;
 	}
 	return (digit_no);
@@ -79,6 +79,8 @@ int _atoi(char *s)
 	int digit_c, si, num = 0;
 
 	digit_c = digit_count(s);
+	if (digit_c == -5)
+		return (digit_c);
 	if (digit_c != 0)
 	{
 		si = sign(s);

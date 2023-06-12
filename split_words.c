@@ -23,6 +23,8 @@ int count_words(char *str, char del)
 		}
 		else if ((str[i] == del || !(str[i + 1])) && str[i - 1] != del)
 			count++;
+		else if ((str[i] != del && !(str[i + 1])) && str[i - 1] == del)
+			count++;
 		i++;
 	}
 	return (count);
@@ -39,7 +41,7 @@ int count_words(char *str, char del)
 
 char **split_words(char *str, char del)
 {
-	int i = 0, j = 0, count;
+	int i = 0, j = 0, cond, count;
 	int prev = 0, cur = 0;
 	char **arr, buf;
 
@@ -49,31 +51,29 @@ char **split_words(char *str, char del)
 	arr = malloc(sizeof(char *) * (count + 1));
 	while (str[i])
 	{
+		cond = 0;
 		if (i == 0 && str[i++] == del)
 			continue;
 		else if ((str[i] == del || !(str[i + 1])) && str[i - 1] != del)
+			cond = 1;
+		else if ((str[i] != del && !(str[i + 1])) && str[i - 1] == del)
+			cond  = 1;
+		if (cond == 1)
 		{
 			cur = i;
 			if (str[i + 1])
-			{
-				buf = str[cur];
-				str[cur] = '\0';
-			}
-
+				buf = str[cur], str[cur] = '\0';
 			while (str[prev] == del || str[prev] == '\n')
 				prev++;
 			arr[j] = malloc(sizeof(char) * (cur - prev + 2));
 			if (!(arr[j]))
 			{
 				while (--j)
-				{
 					free(arr[j]);
-				}
 				free(arr[j]), free(arr);
 			}
 			strcpy(arr[j++], &(str[prev]));
-			str[i] = buf;
-			prev = cur;
+			str[i] = buf, prev = cur;
 		}
 		i++;
 	}

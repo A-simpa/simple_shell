@@ -24,14 +24,19 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 	{
 		if (stat(arr[0], &sb) == 0 && strchr(arr[0], '/'))
 			return (arr);
-		/*printf("got to front of builtin") */
 		if (builtin_check(arr[0]) == 0)
 		{
 			if (arr[1] != NULL)
 				*flag = _atoi(arr[1]);
-			free(lineptr);
-			free_array(arr);
-			exit(*flag);
+			if (*flag == -5)
+			{
+				fprintf(stderr, "%s: %d: %s: Illegal number: %s\n",
+					 name, count, arr[0], arr[1]), free_array(arr);
+				*flag = 2;
+				return (NULL);
+			}
+			free(lineptr), free_array(arr);
+			exit(*flag % 256);
 		}
 		cmd = _which(arr[0]);
 		if (!cmd)
