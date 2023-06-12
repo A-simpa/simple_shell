@@ -26,4 +26,5 @@ int digit_count(char *s);
 int pow_10(int n);
 int sign(char *s);
 int _atoi(char *s);
+void printenv(void);
 #endif /*MAIN_H*/

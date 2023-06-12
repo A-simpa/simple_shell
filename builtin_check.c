@@ -11,7 +11,7 @@
 
 int builtin_check(const char *cmd)
 {
-	char ex[] = "exit";
+	char ex[] = "exit", env[] = "env";
 
 	if (strncmp(cmd, ex, strlen(ex)) == 0)
 	{
@@ -19,6 +19,12 @@ int builtin_check(const char *cmd)
 		if (cmd[strlen(ex)] != '\0')
 			return (-1);
 		return (0);
+	}
+	else if (strncmp(cmd, env, strlen(env)) == 0)
+	{
+		if (cmd[strlen(ex)] != '\0')
+			return (-1);
+		return (1);
 	}
 	return (-1);
 }

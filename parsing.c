@@ -15,8 +15,7 @@
 
 char **parsing(char *lineptr, char *name, int count, int *flag)
 {
-	char **arr;
-	char  *cmd;
+	char **arr, char  *cmd;
 	struct stat sb;
 
 	arr = split_words(lineptr, ' ');
@@ -24,6 +23,11 @@ char **parsing(char *lineptr, char *name, int count, int *flag)
 	{
 		if (stat(arr[0], &sb) == 0 && strchr(arr[0], '/'))
 			return (arr);
+		if (builtin_check(arr[0]) == 1)
+		{
+			printenv(), free(lineptr), free_array(arr);
+			return (NULL);
+		}
 		if (builtin_check(arr[0]) == 0)
 		{
 			if (arr[1] != NULL)
